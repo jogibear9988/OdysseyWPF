@@ -164,18 +164,6 @@ namespace Odyssey.Controls
         public static readonly DependencyProperty DropDownFooterTemplateProperty =
             DependencyProperty.Register("DropDownFooterTemplate", typeof(DataTemplate), typeof(RibbonComboBox), new UIPropertyMetadata(null));
 
-
-
-        protected override void OnPreviewMouseLeftButtonDown(System.Windows.Input.MouseButtonEventArgs e)
-        {
-            if (!IsEditable && e.Source==this)
-            {
-                this.IsDropDownOpen ^= true;
-                e.Handled = true;
-            }
-            base.OnPreviewMouseLeftButtonDown(e);
-        }
-
         #region IKeyboardCommand Members
 
         public void ExecuteKeyTip()
