@@ -44,14 +44,14 @@
                             MaxHeight="{TemplateBinding ComboBox.MaxDropDownHeight}">
                         <Border BorderThickness="1,1,1,1" BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}"
                                 Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" Name="DropDownBorder">
-                            <StackPanel>
-                                <ContentControl Content="{TemplateBinding DropDownHeader}" ContentTemplate="{TemplateBinding DropDownHeaderTemplate}" />
+                            <DockPanel>
+                                <ContentControl Content="{TemplateBinding DropDownHeader}" ContentTemplate="{TemplateBinding DropDownHeaderTemplate}" DockPanel.Dock="Top" />
+                                <ContentControl Content="{TemplateBinding DropDownFooter}" ContentTemplate="{TemplateBinding DropDownFooterTemplate}" DockPanel.Dock="Bottom" />
                                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" CanContentScroll="True">
                                     <ItemsPresenter SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}"
                                             KeyboardNavigation.DirectionalNavigation="Contained" Margin="1" />
                                 </ScrollViewer>
-                                <ContentControl Content="{TemplateBinding DropDownFooter}" ContentTemplate="{TemplateBinding DropDownFooterTemplate}" />
-                            </StackPanel>
+                            </DockPanel>
                         </Border>
                     </mwt:SystemDropShadowChrome>
                 </Popup>
