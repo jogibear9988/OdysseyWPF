@@ -23,7 +23,7 @@ namespace PasswordSafe.Data.Biz
             this.Category = category;
             this.Type = type;
             this.minRange = minRange;
-            this.minRange = maxRange;
+            this.maxRange = maxRange;
             this.order = order;
         }
 
