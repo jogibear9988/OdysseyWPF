@@ -1,0 +1,81 @@
+﻿<Window x:Class="Demos.Outlook" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:odc="clr-namespace:Odyssey.Controls;assembly=Odyssey"
+        Title="Outlook Bar" Height="500" Width="640">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <DockPanel>
+            <odc:OutlookBar Header="Outlook Bar" MaxNumberOfButtons="2" x:Name="bar" MaxWidth="300"
+                    SelectedSectionChanged="bar_SelectedSectionChanged" IsCloseButtonVisible="False" SelectedSectionIndex="0"
+                    Margin="4,4,0,4" Grid.Row="0" DockPanel.Dock="Left" Width="200" IsButtonSplitterVisible="True" IsOverflowVisible="True"
+                    IsPopupVisible="False" ShowSideButtons="True" ShowButtons="True">
+                <odc:OutlookBar.Sections>
+                    <odc:OutlookSection Header="Mail" Image="/Demos;component/Web.png">
+                        <StackPanel>
+                            <odc:OdcExpander Header="Number of Buttons" Margin="0" Background="White" ShowEllipse="False" IsExpanded="True">
+                                <StackPanel>
+                                    <Button Margin="4" Click="OutlookBarIncClick">Show More Buttons</Button>
+                                    <Button Margin="4" Click="OutlookBarDecClick">Show Fewer Buttons</Button>
+                                </StackPanel>
+                            </odc:OdcExpander>
+                            <odc:OdcExpander Header="Skins" Margin="0" Background="White" ShowEllipse="False">
+                                <StackPanel>
+                                    <Button Click="BlueSkinClick" Content="Outlook Blue" />
+                                    <Button Click="SilverSkinClick" Content="Outlook Silver" />
+                                    <Button Click="BlackSkinClick" Content="Outlook Black" />
+                                </StackPanel>
+                            </odc:OdcExpander>
+                            <ToggleButton IsChecked="{Binding IsChecked, ElementName=check3}">Toggle2</ToggleButton>
+                        </StackPanel>
+                    </odc:OutlookSection>
+                    <odc:OutlookSection Header="Calendar" Content="Hello World" Image="/Demos;component/AlignTableCellMiddleCenterHS.png" />
+                    <odc:OutlookSection Header="Contacts" Image="/Demos;component/Web.png">
+                        <odc:OutlookSection.Content>
+                            <StackPanel Focusable="False">
+                                <odc:OdcExpander Header="Lorem Ipsum">
+                                    <StackPanel>
+                                        <TextBlock Text="Lorem ipsum dolor " />
+                                        <TextBlock Text="Sit amet, at urna," />
+                                        <TextBlock Text="Sed mauris morbi sem" />
+                                        <TextBlock Text="Nec sit. Accumsan" />
+                                    </StackPanel>
+                                </odc:OdcExpander>
+                            </StackPanel>
+                        </odc:OutlookSection.Content>
+                    </odc:OutlookSection>
+                </odc:OutlookBar.Sections>
+                <odc:OutlookBar.OverflowMenuItems>
+                    <MenuItem Header="Hello" />
+                </odc:OutlookBar.OverflowMenuItems>
+                <odc:OutlookBar.OptionButtons>
+                    <ToggleButton Width="40" Content="One" />
+                    <Button Width="100">Two Buttons</Button>
+                </odc:OutlookBar.OptionButtons>
+            </odc:OutlookBar>
+            <odc:OutlookBar x:Name="bar2" DockPanel.Dock="Right" DockPosition="Right" ShowButtons="False" IsCloseButtonVisible="True"
+                    Width="200" Margin="0,4,4,4">
+                <odc:OutlookBar.Sections>
+                    <odc:OutlookSection Header="To-Do Bar">
+                        <odc:OutlookSection.Content>
+                            <Grid MinHeight="100">
+                                <TextBlock Text="This could be the content" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            </Grid>
+                        </odc:OutlookSection.Content>
+                    </odc:OutlookSection>
+                </odc:OutlookBar.Sections>
+            </odc:OutlookBar>
+            <Border Background="{DynamicResource {ComponentResourceKey odc:Skins, RibbonWindowBgBrush}}"
+                    BorderBrush="{DynamicResource {ComponentResourceKey odc:Skins, RibbonBorderBrush}}"
+                    TextBlock.Foreground="{DynamicResource {ComponentResourceKey odc:Skins, WindowForegroundBrush}}" BorderThickness="1"
+                    Margin="0,4,0,4">
+                <StackPanel>
+                    <TextBlock x:Name="label" Text="Custom Area" TextBlock.FontStyle="Italic" TextBlock.FontSize="16"
+                            VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    <ToggleButton x:Name="check3">Toggle1</ToggleButton>
+                    <ToggleButton IsChecked="{Binding IsChecked, ElementName=check3}">Toggle2</ToggleButton>
+                </StackPanel>
+            </Border>
+        </DockPanel>
+    </Grid>
+</Window>

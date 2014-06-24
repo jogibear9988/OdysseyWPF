@@ -1,0 +1,153 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:local="clr-namespace:PasswordSafe.Controls"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mwt="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
+        xmlns:sel="clr-namespace:PasswordSafe.DataTemplateSelectors" xmlns:biz="clr-namespace:PasswordSafe.Data.Biz;assembly=PasswordSafe.Data"
+        xmlns:classes="clr-namespace:PasswordSafe.Classes" xmlns:conv="clr-namespace:PasswordSafe.Converter" xmlns:ctrl="clr-namespace:PasswordSafe.Controls"
+        xmlns:odc="clr-namespace:Odyssey.Controls;assembly=Odyssey">
+
+    <DataTemplate x:Key="MemoFieldTemplate" DataType="{x:Type biz:Field}">
+        <Grid Margin="5,0,5,0" Focusable="False">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition MinWidth="100" Width="*" />
+            </Grid.ColumnDefinitions>
+            <odc:RibbonToggleButton odc:RibbonBar.Size="Medium" Grid.Column="0" Content="{Binding Name}" HorizontalAlignment="Stretch"
+                    IsChecked="{Binding IsSelected}" HorizontalContentAlignment="Right" VerticalAlignment="Stretch" Margin="0" Focusable="False"
+                    Command="{x:Static local:Commands.SelectItemCommand}" />
+            <odc:OdcTextBox AcceptsReturn="True" Text="{Binding StringValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1"
+                    HorizontalContentAlignment="Stretch" Focusable="True" Margin="2,2,0,2" MinHeight="48" TextWrapping="Wrap" />
+        </Grid>
+    </DataTemplate>
+    
+    <DataTemplate x:Key="BoolFieldTemplate" DataType="{x:Type biz:Field}">
+        <Grid Margin="5,0,5,0" Focusable="False" HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition MinWidth="100" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <odc:RibbonToggleButton odc:RibbonBar.Size="Medium" Grid.Column="0" Content="{Binding Name}" HorizontalAlignment="Stretch"
+                    IsChecked="{Binding IsSelected}" HorizontalContentAlignment="Right" VerticalAlignment="Stretch" Margin="0" Focusable="False"
+                    Command="{x:Static local:Commands.SelectItemCommand}" />
+            <CheckBox IsChecked="{Binding BoolValue}" Grid.Column="1" VerticalAlignment="Center" Margin="2" HorizontalAlignment="Left" />
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="IntFieldTemplate" DataType="{x:Type biz:Field}">
+        <Grid Margin="5,0,5,0" Focusable="False" HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition MinWidth="100" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <odc:RibbonToggleButton odc:RibbonBar.Size="Medium" Grid.Column="0" Content="{Binding Name}" HorizontalAlignment="Stretch"
+                    IsChecked="{Binding IsSelected}" HorizontalContentAlignment="Right" VerticalAlignment="Stretch" Margin="0" Focusable="False"
+                    Command="{x:Static local:Commands.SelectItemCommand}" />
+            <odc:OdcTextBox Grid.Column="1" Width="100" HorizontalAlignment="Left" Focusable="True" Margin="2,2,0,2">
+                <odc:OdcTextBox.Text>
+                    <Binding Mode="TwoWay" Path="StringValue" IsAsync="True">
+                        <Binding.ValidationRules>
+                            <conv:FieldValidationRule Type="Int" />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </odc:OdcTextBox.Text>
+                <odc:OdcTextBox.Buttons>
+                    <odc:ImageButton Image="/img/copy_16.png" Command="{x:Static local:Commands.CopyCommand}" />
+                </odc:OdcTextBox.Buttons>
+            </odc:OdcTextBox>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="TimeFieldTemplate" DataType="{x:Type biz:Field}">
+        <Grid Margin="5,0,5,0" Focusable="False">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition MinWidth="124" Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <odc:RibbonToggleButton odc:RibbonBar.Size="Medium" Grid.Column="0" Content="{Binding Name}" HorizontalAlignment="Stretch"
+                    IsChecked="{Binding IsSelected}" HorizontalContentAlignment="Right" VerticalAlignment="Stretch" Margin="0" Focusable="False"
+                    Command="{x:Static local:Commands.SelectItemCommand}" />
+            <odc:OdcTextBox Grid.Column="1" HorizontalContentAlignment="Stretch" Width="100" HorizontalAlignment="Left" Focusable="True" Margin="2,2,0,2">
+                <odc:OdcTextBox.Text>
+                    <Binding Mode="TwoWay" Path="StringValue" IsAsync="True">
+                        <Binding.ValidationRules>
+                            <conv:FieldValidationRule Type="Time" />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </odc:OdcTextBox.Text>
+                <odc:OdcTextBox.Buttons>
+                    <odc:ImageButton Image="/img/copy_16.png" Command="{x:Static local:Commands.CopyCommand}" />
+                </odc:OdcTextBox.Buttons>
+            </odc:OdcTextBox>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="DateFieldTemplate" DataType="{x:Type biz:Field}">
+        <Grid Margin="5,0,5,0" Focusable="False">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition MinWidth="124" Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <odc:RibbonToggleButton odc:RibbonBar.Size="Medium" Grid.Column="0" Content="{Binding Name}" HorizontalAlignment="Stretch"
+                    IsChecked="{Binding IsSelected}" HorizontalContentAlignment="Right" VerticalAlignment="Stretch" Margin="0" Focusable="False"
+                    Command="{x:Static local:Commands.SelectItemCommand}" />
+            <odc:OdcTextBox Grid.Column="1" HorizontalContentAlignment="Stretch" Width="100" HorizontalAlignment="Left" Focusable="True" Margin="2,2,0,2">
+                <odc:OdcTextBox.Text>
+                    <Binding Mode="TwoWay" Path="StringValue" IsAsync="True">
+                        <Binding.ValidationRules>
+                            <conv:FieldValidationRule Type="Date" />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </odc:OdcTextBox.Text>
+                <odc:OdcTextBox.Buttons>
+                    <odc:ImageButton Image="/img/copy_16.png" Command="{x:Static local:Commands.CopyCommand}" />
+                </odc:OdcTextBox.Buttons>
+            </odc:OdcTextBox>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="PasswordFieldTemplate" DataType="{x:Type biz:Field}">
+        <Grid Margin="5,0,5,0" Focusable="False">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition MinWidth="100" Width="*" />
+            </Grid.ColumnDefinitions>
+            <odc:RibbonToggleButton odc:RibbonBar.Size="Medium" Grid.Column="0" Content="{Binding Name}" HorizontalAlignment="Stretch"
+                    odc:RibbonOption.AnimateTransition="True" odc:RibbonChrome.AnimateTransition="True" IsChecked="{Binding IsSelected}"
+                    HorizontalContentAlignment="Right" VerticalAlignment="Stretch" Margin="0" Focusable="False"
+                    Command="{x:Static local:Commands.SelectItemCommand}" />
+            <odc:OdcTextBox Text="{Binding StringValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" HorizontalContentAlignment="Stretch"
+                    Focusable="True" Margin="2,2,0,2">
+                <odc:OdcTextBox.Buttons>
+                    <odc:ImageButton Image="/img/copy_16.png" Command="{x:Static local:Commands.CopyCommand}" />
+                </odc:OdcTextBox.Buttons>
+            </odc:OdcTextBox>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="SeparatorFieldTemplate" DataType="{x:Type biz:Field}">
+        <odc:RibbonToggleButton odc:RibbonBar.Size="Medium" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="8,0,8,0"
+                IsChecked="{Binding IsSelected}" HorizontalContentAlignment="Stretch" Focusable="False" Command="{x:Static local:Commands.SelectItemCommand}">
+            <Grid Margin="0" Focusable="False">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Separator Grid.Column="0" HorizontalAlignment="Stretch" Focusable="False" Height="10" VerticalAlignment="Center" x:Name="firstSep" />
+                <TextBlock Grid.Column="1" Text="{Binding Name,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                        Focusable="False" x:Name="text" TextBlock.FontStyle="Italic" Margin="4,0,4,0" />
+                <Separator Grid.Column="2" HorizontalAlignment="Stretch" Focusable="False" Height="10" VerticalAlignment="Center" />
+            </Grid>
+        </odc:RibbonToggleButton>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding Name}" Value="">
+                <Setter Property="Margin" Value="0" TargetName="text" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Name}" Value="{x:Null}">
+                <Setter Property="Margin" Value="0" TargetName="text" />
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+</ResourceDictionary>

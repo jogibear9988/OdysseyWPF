@@ -1,0 +1,552 @@
+﻿<odc:RibbonWindow x:Class="PasswordSafe.Controls.Main" IsGlassEnabled="True" xmlns:classes="clr-namespace:PasswordSafe.Classes"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:odc="clr-namespace:Odyssey.Controls;assembly=Odyssey" xmlns:local="clr-namespace:PasswordSafe.Controls" xmlns:xy="clr-namespace:Odyssey.Controls"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib" FontSize="14" FontWeight="Medium" xmlns:conv="clr-namespace:PasswordSafe.Converter" MinWidth="210"
+        MinHeight="156" xmlns:biz="clr-namespace:PasswordSafe.Data.Biz;assembly=PasswordSafe.Data" xmlns:uc="clr-namespace:PasswordSafe.UserControls"
+        Title="Password Safe Beta" x:Name="main" Height="700" Width="1000">
+
+    <odc:RibbonWindow.InputBindings>
+        <KeyBinding Command="uc:PasswordGrid.FocusSearchBoxCommand" Key="F3" />
+        <KeyBinding Command="uc:PasswordGrid.FocusSearchBoxCommand" Modifiers="Control" Key="F" />
+    </odc:RibbonWindow.InputBindings>
+
+    <odc:RibbonWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="DataTemplates.xaml" />
+                <ResourceDictionary Source="FieldTemplates.xaml" />
+                <ResourceDictionary Source="TemplateFieldTemplates.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <conv:DisplayTypeToVisibleConverter x:Key="typeConverter" />
+        </ResourceDictionary>
+    </odc:RibbonWindow.Resources>
+    <Grid>
+        <uc:LockScreen Visibility="{Binding DisplayType, Converter={StaticResource typeConverter}, ElementName=main, ConverterParameter=Login}"
+                x:Name="lockScreen" />
+        <uc:ChangePassword Visibility="{Binding DisplayType, Converter={StaticResource typeConverter}, ElementName=main, ConverterParameter=ChangePassword}"
+                x:Name="changePassword" />
+        <Grid odc:ImageRenderOptions.LargeImageScalingMode="NearestNeighbor" odc:RibbonChrome.IsGrayScaleEnabled="true"
+                Visibility="{Binding DisplayType, Converter={StaticResource typeConverter}, ElementName=main, ConverterParameter=Passwords}"
+                DataContext="{Binding ElementName=main}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <odc:RibbonBar x:Name="ribbon" Grid.ColumnSpan="2" Grid.Row="0" ShowTitleOnRight="False" SelectedTabIndexChanged="OnSelectedTabIndexChanged">
+                <odc:RibbonBar.ApplicationMenu>
+                    <odc:RibbonApplicationMenu MenuButtonImage="/img/Lock_16.png" odc:RibbonButton.ImageStretch="Fill" odc:KeyTip.Key="F" Focusable="True">
+                        <odc:RibbonApplicationMenu.ToolTip>
+                            <odc:RibbonToolTip Title="Application Menu" Description="Click here to save, undo, print or synchronize. " Image="/img/Blue48.png" />
+                        </odc:RibbonApplicationMenu.ToolTip>
+                        <odc:RibbonApplicationMenuItem x:Name="newPasswordMenuItem" Header="New" Image="img/NewPassword_32.png"
+                                Command="{x:Static local:Commands.NewPasswordCommand}" odc:KeyTip.Key="N">
+                            <odc:RibbonApplicationMenuItem.SubMenuContent>
+                                <odc:ClickableTreeView ItemTemplate="{StaticResource categoryItemTemplate3}" Padding="4" Focusable="False"
+                                        odc:RibbonOption.CloseDropDownOnClick="True" odc:ClickableTreeViewItem.Click="SelectCategoryTreeViewItemClicked"
+                                        BorderThickness="0" ItemsSource="{Binding Source={StaticResource categoryData}}">
+                                    <odc:ClickableTreeView.ItemContainerStyle>
+                                        <Style TargetType="{x:Type odc:ClickableTreeViewItem}">
+                                            <Setter Property="Command" Value="{x:Static local:Commands.NewPasswordCommand}" />
+                                            <Setter Property="IsExpanded" Value="true" />
+                                        </Style>
+                                    </odc:ClickableTreeView.ItemContainerStyle>
+                                </odc:ClickableTreeView>
+                            </odc:RibbonApplicationMenuItem.SubMenuContent>
+                            <odc:RibbonApplicationMenuItem.Items>
+                                <!--Note: this is just a dummy item to ensure the ApplicationMenuItem to open the popup to display the treeview:-->
+                                <odc:RibbonMenuItem Visibility="Collapsed" />
+                            </odc:RibbonApplicationMenuItem.Items>
+                        </odc:RibbonApplicationMenuItem>
+                        <odc:RibbonApplicationMenuItem Header="Save All" xy:RibbonSrc.Name="save" Command="{x:Static local:Commands.SaveAllCommand}"
+                                x:Name="SaveAllMenuItem" odc:KeyTip.Key="S" />
+                        <odc:RibbonApplicationMenuItem Header="Undo All" xy:RibbonSrc.Name="undo" Command="{x:Static local:Commands.UndoAllCommand}"
+                                x:Name="UndoAllMenuItem" odc:KeyTip.Key="U" />
+                        <odc:RibbonSeparator />
+                        <odc:RibbonApplicationMenuItem Header="Print" xy:RibbonSrc.Name="Print" odc:KeyTip.Key="P" />
+                        <odc:RibbonApplicationMenuItem Header="Synchronize" xy:RibbonSrc.Name="properties_document" IsEnabled="True"
+                                ToolTip="Synchronizes with Mobile Device or over other Instances over Network." />
+                        <odc:RibbonApplicationMenuItem IsCheckable="True" IsChecked="True" Header="Allow Edit" xy:RibbonSrc.Name="Accept" IsEnabled="False"
+                                Visibility="Collapsed" />
+                        <odc:RibbonSeparator />
+                        <odc:RibbonApplicationMenuItem Header="Import..." IsCheckable="True" IsChecked="{Binding IsGlassEnabled, ElementName=main}"
+                                odc:KeyTip.Key="I" xy:RibbonSrc.Name="open_document" IsEnabled="False" />
+                        <odc:RibbonApplicationMenuItem Header="Export..." Image="img/Export_32.png" Command="{x:Static local:Commands.ExportCommand}"
+                                odc:KeyTip.Key="E">
+                            <odc:RibbonApplicationMenuItem.ToolTip>Exports Passwords to an unencrypted xml file.</odc:RibbonApplicationMenuItem.ToolTip>
+                        </odc:RibbonApplicationMenuItem>
+                        <odc:RibbonSeparator />
+                        <odc:RibbonApplicationMenuItem Header="Log out" xy:RibbonSrc.Name="Lock" Command="{x:Static local:Commands.LogoutCommand}"
+                                odc:KeyTip.Key="L" />
+                        <odc:RibbonApplicationMenu.Footer>
+                            <StackPanel HorizontalAlignment="Stretch" Margin="0,4,0,0" Orientation="Horizontal">
+                                <odc:OdcButton HorizontalAlignment="Right" Command="{x:Static odc:RibbonWindow.CloseCommand}" odc:KeyTip.Key="X">Exit PasswordSafe</odc:OdcButton>
+                            </StackPanel>
+                        </odc:RibbonApplicationMenu.Footer>
+                        <odc:RibbonApplicationMenu.MenuHeaderTemplate>
+                            <DataTemplate>
+                                <Border Width="320" />
+                            </DataTemplate>
+                        </odc:RibbonApplicationMenu.MenuHeaderTemplate>
+
+                    </odc:RibbonApplicationMenu>
+                </odc:RibbonBar.ApplicationMenu>
+
+                <odc:RibbonBar.QAToolBar>
+                    <odc:RibbonQAToolBar>
+                        <odc:RibbonButton xy:RibbonSrc.Name="save" Command="{x:Static local:Commands.SaveCommand}" odc:KeyTip.Key="QS">Save</odc:RibbonButton>
+                        <odc:RibbonButton xy:RibbonSrc.Name="undo" Command="{x:Static local:Commands.UndoCommand}" odc:KeyTip.Key="QU">Save</odc:RibbonButton>
+                        <odc:RibbonButton xy:RibbonSrc.Name="print" odc:KeyTip.Key="QP">Print</odc:RibbonButton>
+
+                        <odc:RibbonMenuItem Header="Show Below the Ribbon" Command="{x:Static odc:RibbonBar.QAPlacementBottomCommand}" />
+                        <odc:RibbonMenuItem Header="Show Above the Ribbon" Command="{x:Static odc:RibbonBar.QAPlacementTopCommand}" />
+                    </odc:RibbonQAToolBar>
+                </odc:RibbonBar.QAToolBar>
+
+                <odc:RibbonBar.Tabs>
+                    <odc:RibbonTabItem Title="Password" DataContext="{Binding SelectedPassword}" odc:KeyTip.Key="H">
+                        <odc:RibbonGroup Title="Password" odc:RibbonBar.AffectsDropDown="False" ExecuteLauncher="LaunchConfiguration"
+                                IsDialogLauncherVisible="True" odc:KeyTip.Key="GA">
+                            <odc:RibbonSplitButton SmallImage="img/new_document_16.png" LargeImage="img/NewPassword_32.png" Content="New Password" MinWidth="64"
+                                    odc:KeyTip.Key="N" Command="{x:Static local:Commands.NewPasswordCommand}" odc:RibbonBar.MinSize="Large">
+                                <odc:RibbonSplitButton.DropDownHeader>
+                                    <odc:ClickableTreeView ItemTemplate="{StaticResource categoryItemTemplate3}" Padding="4" Focusable="False"
+                                            odc:RibbonOption.CloseDropDownOnClick="True" odc:ClickableTreeViewItem.Click="SelectCategoryTreeViewItemClicked"
+                                            KeyboardNavigation.DirectionalNavigation="Cycle" BorderThickness="0" MaxHeight="240"
+                                            ItemsSource="{Binding Source={StaticResource categoryData}}">
+                                        <odc:ClickableTreeView.ItemContainerStyle>
+                                            <Style TargetType="{x:Type odc:ClickableTreeViewItem}">
+                                                <Setter Property="Command" Value="{x:Static local:Commands.NewPasswordCommand}" />
+                                                <Setter Property="IsExpanded" Value="true" />
+                                            </Style>
+                                        </odc:ClickableTreeView.ItemContainerStyle>
+                                    </odc:ClickableTreeView>
+                                </odc:RibbonSplitButton.DropDownHeader>
+                                <odc:RibbonSplitButton.ToolTip>
+                                    <odc:RibbonToolTip Title="New Password"
+                                            Description="Creates a new Password. Select the Category from the DropDown List, or click to use the currently selected Category."
+                                            Image="/img/Vista48.png" Footer="This is the footer" />
+                                </odc:RibbonSplitButton.ToolTip>
+                            </odc:RibbonSplitButton>
+
+                            <odc:RibbonButton Content="Delete" xy:RibbonSrc.Name="delete" MinWidth="54" odc:RibbonBar.AffectsDropDown="False"
+                                    odc:KeyTip.Key="B1" Command="{x:Static local:Commands.DeleteCommand}" odc:RibbonBar.MinSize="Medium">
+                                <odc:RibbonButton.ToolTip>
+                                    <odc:RibbonToolTip Title="Delete" Description="This is an example tooltip bla bla bla bla lorem ipsum and so one...."
+                                            Image="/img/Black48.png" Footer="This is the footer for Delete" />
+
+                                </odc:RibbonButton.ToolTip>
+                            </odc:RibbonButton>
+
+                            <odc:RibbonButton Content="Save" xy:RibbonSrc.Name="Save" MinWidth="54" odc:RibbonBar.MinSize="Medium" odc:KeyTip.Key="S"
+                                    Command="{x:Static local:Commands.SaveCommand}" />
+
+                            <odc:RibbonButton Content="Undo" xy:RibbonSrc.Name="Undo" MinWidth="54" odc:RibbonBar.MinSize="Medium" odc:KeyTip.Key="U"
+                                    Command="{x:Static local:Commands.UndoCommand}" />
+
+                            <odc:RibbonDropDownButton LargeImage="{Binding IsFavorite, Converter={StaticResource favoriteImageConverter}}" odc:KeyTip.Key="CF"
+                                    Content="Change Favorites" IsEnabled="True"
+                                    SmallImage="{Binding IsFavorite, Converter={StaticResource favoriteImageConverter}, ConverterParameter=16}" MinWidth="54"
+                                    odc:RibbonBar.MinSize="Large" DataContext="{Binding SelectedPassword, ElementName=main}"
+                                    Command="{x:Static local:Commands.PasswordSelectedCommand}">
+                                <odc:RibbonDropDownButton.DropDownHeader>
+                                    <odc:ClickableTreeView ItemTemplate="{StaticResource FavoriteFolderTemplate}" Padding="4" Focusable="False" x:Name="tv"
+                                            KeyboardNavigation.ControlTabNavigation="None" KeyboardNavigation.DirectionalNavigation="Cycle" BorderThickness="0"
+                                            MaxHeight="240" ItemsSource="{Binding PasswordFolders}">
+                                        <odc:ClickableTreeView.ItemContainerStyle>
+                                            <Style TargetType="{x:Type odc:ClickableTreeViewItem}">
+                                                <Setter Property="IsExpanded" Value="true" />
+                                                <Setter Property="Command" Value="{x:Static local:Commands.ToggleFaveCommand}" />
+                                            </Style>
+                                        </odc:ClickableTreeView.ItemContainerStyle>
+                                    </odc:ClickableTreeView>
+                                </odc:RibbonDropDownButton.DropDownHeader>
+                            </odc:RibbonDropDownButton>
+
+                        </odc:RibbonGroup>
+
+                        <odc:RibbonGroup Title="Copy">
+                            <!--<odc:RibbonButton Content="Copy User-Name" xy:RibbonSrc.Name="copy_lined" MinWidth="64" odc:RibbonBar.MinSize="Medium"
+                                Command="{x:Static local:Commands.CopyUserNameCommand}" />
+                        <odc:RibbonButton Content="Copy Password" xy:RibbonSrc.Name="copy_lined" MinWidth="64" odc:RibbonBar.MinSize="Medium"
+                                IsEnabled="True" />-->
+                            <odc:RibbonDropDownButton x:Name="CopyDropDown" Content="Copy" xy:RibbonSrc.Name="copy" MinWidth="48"
+                                    DataContext="{Binding SelectedPassword, ElementName=main}" odc:RibbonBar.MinSize="Medium"
+                                    ItemsSource="{Binding Fields, Converter={StaticResource copyFieldConverter}}"
+                                    ItemTemplateSelector="{StaticResource copyPasswordSelector}" IsEnabled="True">
+                            </odc:RibbonDropDownButton>
+                        </odc:RibbonGroup>
+
+                        <odc:RibbonGroup Title="Field" DataContext="{Binding SelectedPasswordField, ElementName=main}">
+                            <odc:RibbonSplitButton Content="Add Field" xy:RibbonSrc.Name="TextBox" MinWidth="60" odc:RibbonBar.MinSize="Large"
+                                    odc:KeyTip.Key="AF" Command="{x:Static local:Commands.NewFieldCommand}" CommandParameter="Text">
+                                <odc:RibbonMenuItem Header="Password" Command="{x:Static local:Commands.NewFieldCommand}" CommandParameter="Password"
+                                        odc:KeyTip.Key="P" Image="/img/pwField_16.png" />
+                                <odc:RibbonMenuItem Header="Separator" Command="{x:Static local:Commands.NewFieldCommand}" CommandParameter="Separator"
+                                        odc:KeyTip.Key="S" Image="/img/separator_16.png" />
+                                <odc:RibbonMenuItem Header="Memo" Command="{x:Static local:Commands.NewFieldCommand}" CommandParameter="Memo" odc:KeyTip.Key="M"
+                                        Image="/img/QuickParts_16.png" />
+                                <odc:RibbonMenuItem Header="Date" Command="{x:Static local:Commands.NewFieldCommand}" CommandParameter="Date" odc:KeyTip.Key="D"
+                                        Image="/img/dateTime_16.png" />
+                                <odc:RibbonMenuItem Header="Time" Command="{x:Static local:Commands.NewFieldCommand}" CommandParameter="Time" odc:KeyTip.Key="T"
+                                        Image="/img/dateTime_16.png" />
+                                <odc:RibbonMenuItem Header="Number" Command="{x:Static local:Commands.NewFieldCommand}" CommandParameter="Int"
+                                        odc:KeyTip.Key="N" Image="/img/numeric_16.png" />
+                                <odc:RibbonMenuItem Header="Checkbox" Command="{x:Static local:Commands.NewFieldCommand}" CommandParameter="Bool"
+                                        odc:KeyTip.Key="C" Image="/img/checkbox_16.png" />
+                                <odc:RibbonSplitButton.ToolTip>
+                                    <odc:RibbonToolTip Title="Add Field" Description="Adds a field to the Password." />
+                                </odc:RibbonSplitButton.ToolTip>
+                            </odc:RibbonSplitButton>
+
+                            <odc:RibbonButton Content="Delete Field" SmallImage="img/remove_16.png" LargeImage="img/DeleteTb_32.png"
+                                    Command="{x:Static local:Commands.FieldDeleteCommand}" odc:KeyTip.Key="DF" odc:RibbonBar.MinSize="Large" />
+
+                            <odc:RibbonFlowGroup>
+                                <odc:RibbonTextBox x:Name="fieldName" odc:RibbonBar.Reduction="Medium,Small" odc:KeyTip.Key="FN"
+                                        Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"
+                                        IsEnabled="{Binding SelectedPasswordField, Converter={StaticResource nullToBoolConverter}, ElementName=main}"
+                                        ContentWidth="120">
+                                </odc:RibbonTextBox>
+                                <odc:RibbonButtonGroup x:Name="fieldButtons" HorizontalAlignment="Right" Focusable="False" Margin="1,0,1,0">
+                                    <odc:RibbonButton xy:RibbonSrc.Name="up" Content="Up" Command="{x:Static local:Commands.FieldUpCommand}" odc:KeyTip.Key="MU" />
+                                    <odc:RibbonButton xy:RibbonSrc.Name="down" Content="Down" Command="{x:Static local:Commands.FieldDownCommand}"
+                                            odc:KeyTip.Key="MD" Focusable="False" />
+                                    <odc:RibbonButton xy:RibbonSrc.Name="top" Content="Top" Command="{x:Static local:Commands.FieldTopCommand}"
+                                            odc:KeyTip.Key="MT" />
+                                    <odc:RibbonButton xy:RibbonSrc.Name="bottom" Content="Bottom" Command="{x:Static local:Commands.FieldBottomCommand}"
+                                            odc:KeyTip.Key="MB" />
+                                </odc:RibbonButtonGroup>
+                                <odc:RibbonTextBox IsReadOnly="True" Text="{Binding Type, Mode=OneWay}" ContentWidth="64" Focusable="False"
+                                        HorizontalContentAlignment="Center" />
+                                <odc:RibbonButtonGroup>
+                                    <odc:RibbonButton SmallImage="img/Left_16.png" Content="Previous"
+                                            Command="{x:Static local:Commands.SelectPreviousFieldCommand}" odc:KeyTip.Key="P">
+                                        <odc:RibbonButton.ToolTip>
+                                            <odc:RibbonToolTip Title="Select previous Field"
+                                                    Description="Selects the previous field for edit. If no field is selected, the last one becomes selected." />
+                                        </odc:RibbonButton.ToolTip>
+                                    </odc:RibbonButton>
+                                    <odc:RibbonButton SmallImage="img/Right_16.png" Content="Next" Command="{x:Static local:Commands.SelectNextFieldCommand}"
+                                            odc:KeyTip.Key="E">
+                                        <odc:RibbonButton.ToolTip>
+                                            <odc:RibbonToolTip Title="Select next Field"
+                                                    Description="Selects the next field for edit. If no field is selected, the first one becomes selected." />
+                                        </odc:RibbonButton.ToolTip>
+                                    </odc:RibbonButton>
+                                </odc:RibbonButtonGroup>
+                            </odc:RibbonFlowGroup>
+                        </odc:RibbonGroup>
+
+                        <odc:RibbonGroup Title="Options" DataContext="{Binding SelectedPasswordField, ElementName=main}">
+                            <TextBlock Text="Lines" Height="20" VerticalAlignment="Center" />
+                            <odc:RibbonComboBox Image="img/min_16.png" Title="Min" HorizontalContentAlignment="Left" LabelWidth="24"
+                                    odc:RibbonBar.Reduction="Medium,Small" Text="{Binding MinLines}"
+                                    IsEnabled="{Binding SelectedPasswordField, Converter={StaticResource nullToBoolConverter}, ElementName=main, ConverterParameter=HasLines}"
+                                    ContentWidth="54">
+                                <odc:RibbonComboBoxItem Content="1" />
+                                <odc:RibbonComboBoxItem Content="2" />
+                                <odc:RibbonComboBoxItem Content="3" />
+                                <odc:RibbonComboBoxItem Content="4" />
+                                <odc:RibbonComboBoxItem Content="5" />
+                                <odc:RibbonComboBoxItem Content="6" />
+                                <odc:RibbonComboBoxItem Content="8" />
+                                <odc:RibbonComboBoxItem Content="10" />
+                            </odc:RibbonComboBox>
+                            <odc:RibbonComboBox Image="img/max_16.png" Title="Max" HorizontalContentAlignment="Left" LabelWidth="24"
+                                    odc:RibbonBar.Reduction="Medium,Small" Text="{Binding MaxLines}"
+                                    IsEnabled="{Binding SelectedPasswordField, Converter={StaticResource nullToBoolConverter}, ElementName=main, ConverterParameter=HasLines}"
+                                    ContentWidth="54">
+                                <odc:RibbonComboBoxItem Content="1" />
+                                <odc:RibbonComboBoxItem Content="2" />
+                                <odc:RibbonComboBoxItem Content="3" />
+                                <odc:RibbonComboBoxItem Content="4" />
+                                <odc:RibbonComboBoxItem Content="5" />
+                                <odc:RibbonComboBoxItem Content="6" />
+                                <odc:RibbonComboBoxItem Content="8" />
+                                <odc:RibbonComboBoxItem Content="10" />
+                            </odc:RibbonComboBox>
+                            <odc:RibbonSeparator Margin="3,3,3,0" />
+                            <TextBlock Text="Range" Height="20" VerticalAlignment="Center" />
+
+                            <!--Settings IsAsync to true enables the TextBox to be updated with the formatted value right after updating the target:-->
+                            <odc:RibbonTextBox Image="img/Text_16.png" Title="From" HorizontalContentAlignment="Left" LabelWidth="32"
+                                    odc:RibbonBar.Reduction="Medium,Small" Text="{Binding MinRangeString, IsAsync=True}"
+                                    IsEnabled="{Binding SelectedPasswordField, Converter={StaticResource nullToBoolConverter}, ElementName=main, ConverterParameter=HasRange}"
+                                    ContentWidth="64" />
+                            <odc:RibbonTextBox Image="img/Text_16.png" Title="To" HorizontalContentAlignment="Left" LabelWidth="32"
+                                    odc:RibbonBar.Reduction="Medium,Small" Text="{Binding MaxRangeString, IsAsync=True}"
+                                    IsEnabled="{Binding SelectedPasswordField, Converter={StaticResource nullToBoolConverter}, ElementName=main, ConverterParameter=HasRange}"
+                                    ContentWidth="64" />
+
+                        </odc:RibbonGroup>
+
+                    </odc:RibbonTabItem>
+
+                    <odc:RibbonTabItem Title="Customize" odc:KeyTip.Key="TU">
+                        <odc:RibbonGroup Title="Appearance" ExecuteLauncher="LaunchConfiguration" IsDialogLauncherVisible="True" odc:KeyTip.Key="GA">
+                            <odc:RibbonToggleButton Content="Enable Glass" IsChecked="{Binding IsGlassEnabled, ElementName=main}" odc:RibbonBar.MinSize="Large"
+                                    IsEnabled="{Binding IsGlassAvailable, ElementName=main}" xy:RibbonSrc.Name="zoom" Margin="0,0,4,0" />
+                            <odc:RibbonGallery x:Name="StyleGallery" HotThumbnailChanged="RibbonGallery_HotThumbnailChanged"
+                                    odc:RibbonGallery.ReductionColumns="8,7,6,5,4,3,2,1" SelectionChanged="RibbonGallery_SelectionChanged">
+                                <odc:RibbonGallery.ThumbnailSize>
+                                    <Size Width="100" Height="72" />
+                                </odc:RibbonGallery.ThumbnailSize>
+                                <odc:RibbonThumbnail ImageSource="/img/vista48.png" />
+                                <odc:RibbonThumbnail ImageSource="/img/win7.48.png" />
+                                <odc:RibbonThumbnail ImageSource="/img/blue48.png" />
+                                <odc:RibbonThumbnail ImageSource="/img/silver48.png" />
+                                <odc:RibbonThumbnail ImageSource="/img/black48.png" />
+                            </odc:RibbonGallery>
+                        </odc:RibbonGroup>
+                    </odc:RibbonTabItem>
+
+                    <odc:RibbonTabItem x:Name="TemplateTab" Title="Template" Visibility="Collapsed" odc:KeyTip.Key="H">
+                        <odc:RibbonGroup Title="Template">
+                            <odc:RibbonButton Content="Save" xy:RibbonSrc.Name="Save" odc:RibbonBar.MinSize="Medium"
+                                    Command="{x:Static local:Commands.SaveTemplateCommand}" />
+
+                            <odc:RibbonButton Content="Undo" xy:RibbonSrc.Name="Undo" odc:RibbonBar.MinSize="Medium"
+                                    Command="{x:Static local:Commands.UndoTemplateCommand}" />
+
+                        </odc:RibbonGroup>
+
+                        <odc:RibbonGroup Title="Field" DataContext="{Binding SelectedTemplateField, ElementName=main}">
+                            <odc:RibbonSplitButton Content="Add Field" xy:RibbonSrc.Name="TextBox" MinWidth="60" odc:RibbonBar.MinSize="Large"
+                                    Command="{x:Static local:Commands.NewTemplateFieldCommand}" CommandParameter="Text">
+                                <odc:RibbonMenuItem Header="Password" Command="{x:Static local:Commands.NewTemplateFieldCommand}" CommandParameter="Password"
+                                        Image="/img/pwField_16.png" />
+                                <odc:RibbonMenuItem Header="Separator" Command="{x:Static local:Commands.NewTemplateFieldCommand}" CommandParameter="Separator"
+                                        Image="/img/separator_16.png" />
+                                <odc:RibbonMenuItem Header="Memo" Command="{x:Static local:Commands.NewTemplateFieldCommand}" CommandParameter="Memo"
+                                        Image="/img/QuickParts_16.png" />
+                                <odc:RibbonMenuItem Header="Date" Command="{x:Static local:Commands.NewTemplateFieldCommand}" CommandParameter="Date"
+                                        Image="/img/dateTime_16.png" />
+                                <odc:RibbonMenuItem Header="Time" Command="{x:Static local:Commands.NewTemplateFieldCommand}" CommandParameter="Time"
+                                        Image="/img/dateTime_16.png" />
+                                <odc:RibbonMenuItem Header="Number" Command="{x:Static local:Commands.NewTemplateFieldCommand}" CommandParameter="Int"
+                                        Image="/img/Numeric_16.png" />
+                                <odc:RibbonMenuItem Header="Checkbox" Command="{x:Static local:Commands.NewTemplateFieldCommand}" CommandParameter="Bool"
+                                        Image="/img/checkbox_16.png" />
+                            </odc:RibbonSplitButton>
+                            <odc:RibbonButton Content="Delete Field" SmallImage="img/remove_16.png" LargeImage="img/DeleteTb_32.png" odc:RibbonBar.MinSize="Medium"
+                                    Command="{x:Static local:Commands.DeleteTemplateFieldCommand}" />
+                            <odc:RibbonFlowGroup>
+                                <odc:RibbonTextBox Margin="0" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" x:Name="TemplateFieldName"
+                                        IsEnabled="{Binding  Converter={StaticResource nullToBoolConverter}}" ContentWidth="120">
+                                </odc:RibbonTextBox>
+                                <odc:RibbonButtonGroup Margin="1,0,1,0">
+                                    <odc:RibbonButton xy:RibbonSrc.Name="up" Content="Up" Command="{x:Static local:Commands.TemplateUpCommand}" />
+                                    <odc:RibbonButton xy:RibbonSrc.Name="down" Content="Down" Command="{x:Static local:Commands.TemplateDownCommand}" />
+                                    <odc:RibbonButton xy:RibbonSrc.Name="top" Content="Top" Command="{x:Static local:Commands.TemplateTopCommand}" />
+                                    <odc:RibbonButton xy:RibbonSrc.Name="bottom" Content="Bottom" Command="{x:Static local:Commands.TemplateBottomCommand}" />
+                                </odc:RibbonButtonGroup>
+                                <odc:RibbonTextBox IsReadOnly="True" Text="{Binding Type, Mode=OneWay}" ContentWidth="64" Focusable="False"
+                                        HorizontalContentAlignment="Center" />
+                            </odc:RibbonFlowGroup>
+
+                        </odc:RibbonGroup>
+
+                        <odc:RibbonGroup Title="Options" DataContext="{Binding SelectedTemplateField, ElementName=main}" IsEnabled="False">
+                            <TextBlock Text="Lines" Height="20" VerticalAlignment="Center" />
+                            <odc:RibbonComboBox Image="img/Text_16.png" Title="Min" HorizontalContentAlignment="Left" LabelWidth="24"
+                                    odc:RibbonBar.Reduction="Medium,Small" Text=""
+                                    IsEnabled="{Binding SelectedPasswordField, Converter={StaticResource nullToBoolConverter}, ElementName=main, ConverterParameter=HasLines}"
+                                    ContentWidth="54">
+                                <odc:RibbonComboBoxItem Content="1" />
+                                <odc:RibbonComboBoxItem Content="2" />
+                                <odc:RibbonComboBoxItem Content="3" />
+                                <odc:RibbonComboBoxItem Content="4" />
+                                <odc:RibbonComboBoxItem Content="5" />
+                                <odc:RibbonComboBoxItem Content="6" />
+                                <odc:RibbonComboBoxItem Content="8" />
+                                <odc:RibbonComboBoxItem Content="10" />
+                            </odc:RibbonComboBox>
+                            <odc:RibbonComboBox Image="img/Text_16.png" Title="Max" HorizontalContentAlignment="Left" LabelWidth="24"
+                                    odc:RibbonBar.Reduction="Medium,Small" Text=""
+                                    IsEnabled="{Binding SelectedPasswordField, Converter={StaticResource nullToBoolConverter}, ElementName=main, ConverterParameter=HasLines}"
+                                    ContentWidth="54">
+                                <odc:RibbonComboBoxItem Content="1" />
+                                <odc:RibbonComboBoxItem Content="2" />
+                                <odc:RibbonComboBoxItem Content="3" />
+                                <odc:RibbonComboBoxItem Content="4" />
+                                <odc:RibbonComboBoxItem Content="5" />
+                                <odc:RibbonComboBoxItem Content="6" />
+                                <odc:RibbonComboBoxItem Content="8" />
+                                <odc:RibbonComboBoxItem Content="10" />
+                            </odc:RibbonComboBox>
+                            <odc:RibbonSeparator Margin="3,3,3,0" />
+                            <TextBlock Text="Range" Height="20" VerticalAlignment="Center" />
+                            <odc:RibbonComboBox Image="img/Text_16.png" Title="Min" HorizontalContentAlignment="Left" LabelWidth="24"
+                                    odc:RibbonBar.Reduction="Medium,Small" Text=""
+                                    IsEnabled="{Binding SelectedPasswordField, Converter={StaticResource nullToBoolConverter}, ElementName=main, ConverterParameter=HasLines}"
+                                    ContentWidth="54">
+                                <odc:RibbonComboBoxItem Content="1" />
+                                <odc:RibbonComboBoxItem Content="2" />
+                                <odc:RibbonComboBoxItem Content="3" />
+                                <odc:RibbonComboBoxItem Content="4" />
+                                <odc:RibbonComboBoxItem Content="5" />
+                                <odc:RibbonComboBoxItem Content="6" />
+                                <odc:RibbonComboBoxItem Content="8" />
+                                <odc:RibbonComboBoxItem Content="10" />
+                            </odc:RibbonComboBox>
+                            <odc:RibbonComboBox Image="img/Text_16.png" Title="Max" HorizontalContentAlignment="Left" LabelWidth="24"
+                                    odc:RibbonBar.Reduction="Medium,Small" Text=""
+                                    IsEnabled="{Binding SelectedPasswordField, Converter={StaticResource nullToBoolConverter}, ElementName=main, ConverterParameter=HasLines}"
+                                    ContentWidth="54">
+                                <odc:RibbonComboBoxItem Content="1" />
+                                <odc:RibbonComboBoxItem Content="2" />
+                                <odc:RibbonComboBoxItem Content="3" />
+                                <odc:RibbonComboBoxItem Content="4" />
+                                <odc:RibbonComboBoxItem Content="5" />
+                                <odc:RibbonComboBoxItem Content="6" />
+                                <odc:RibbonComboBoxItem Content="8" />
+                                <odc:RibbonComboBoxItem Content="10" />
+                            </odc:RibbonComboBox>
+                        </odc:RibbonGroup>
+
+                    </odc:RibbonTabItem>
+                    <odc:RibbonTabItem Title="Category" x:Name="TemplateCategoryTab" Visibility="Collapsed" odc:KeyTip.Key="TC">
+                        <odc:RibbonGroup Title="Category" DataContext="{Binding SelectedCategory,Mode=OneWay}">
+                            <odc:RibbonButton Content="Add Category" xy:RibbonSrc.Name="Category" MinWidth="60" odc:RibbonBar.MinSize="Large"
+                                    Command="{x:Static local:Commands.AddCategoryCommand}" />
+                            <odc:RibbonFlowGroup>
+                                <odc:RibbonButtonGroup>
+                                    <odc:RibbonButton Content="Delete Category" xy:RibbonSrc.Name="remove" odc:RibbonBar.MinSize="Medium"
+                                            Command="{x:Static local:Commands.DeleteCategoryCommand}" />
+                                </odc:RibbonButtonGroup>
+                                <odc:RibbonTextBox Margin="4,0,4,0" Text="{Binding Name}" IsEnabled="{Binding  Converter={StaticResource nullToBoolConverter}}"
+                                        x:Name="categoryName2" ContentWidth="120">
+                                </odc:RibbonTextBox>
+                                <odc:RibbonButtonGroup>
+                                    <odc:RibbonButton xy:RibbonSrc.Name="up" Content="Up" Command="{x:Static local:Commands.CategoryUpCommand}" />
+                                    <odc:RibbonButton xy:RibbonSrc.Name="down" Content="Down" Command="{x:Static local:Commands.CategoryDownCommand}" />
+                                    <odc:RibbonButton xy:RibbonSrc.Name="top" Content="Top" Command="{x:Static local:Commands.CategoryTopCommand}" />
+                                    <odc:RibbonButton xy:RibbonSrc.Name="bottom" Content="Bottom" Command="{x:Static local:Commands.CategoryBottomCommand}" />
+                                </odc:RibbonButtonGroup>
+                            </odc:RibbonFlowGroup>
+                        </odc:RibbonGroup>
+                    </odc:RibbonTabItem>
+
+                </odc:RibbonBar.Tabs>
+                <odc:RibbonBar.ContextualTabSets>
+
+                    <odc:RibbonContextualTabSet Title="Sidebar" Color="Lime" x:Name="SidebarTabs">
+                        <odc:RibbonTabItem x:Name="categoryTab" Title="Category" odc:KeyTip.Key="TC">
+                            <odc:RibbonGroup Title="Category" DataContext="{Binding SelectedCategory,Mode=OneWay}">
+                                <odc:RibbonButton Content="Add Category" xy:RibbonSrc.Name="Category" MinWidth="60" odc:RibbonBar.MinSize="Large"
+                                        Command="{x:Static local:Commands.AddCategoryCommand}" />
+                                <odc:RibbonFlowGroup>
+                                    <odc:RibbonButtonGroup>
+                                        <odc:RibbonButton Content="Delete Category" xy:RibbonSrc.Name="remove" odc:RibbonBar.MinSize="Medium"
+                                                Command="{x:Static local:Commands.DeleteCategoryCommand}" />
+                                    </odc:RibbonButtonGroup>
+                                    <odc:RibbonTextBox Margin="4,0,4,0" Text="{Binding Name}"
+                                            IsEnabled="{Binding  Converter={StaticResource nullToBoolConverter}}" x:Name="categoryName" ContentWidth="120">
+                                    </odc:RibbonTextBox>
+                                    <odc:RibbonButtonGroup>
+                                        <odc:RibbonButton xy:RibbonSrc.Name="up" Content="Up" Command="{x:Static local:Commands.CategoryUpCommand}" />
+                                        <odc:RibbonButton xy:RibbonSrc.Name="down" Content="Down" Command="{x:Static local:Commands.CategoryDownCommand}" />
+                                        <odc:RibbonButton xy:RibbonSrc.Name="top" Content="Top" Command="{x:Static local:Commands.CategoryTopCommand}" />
+                                        <odc:RibbonButton xy:RibbonSrc.Name="bottom" Content="Bottom" Command="{x:Static local:Commands.CategoryBottomCommand}" />
+                                    </odc:RibbonButtonGroup>
+                                </odc:RibbonFlowGroup>
+                            </odc:RibbonGroup>
+
+                        </odc:RibbonTabItem>
+                        <odc:RibbonTabItem Title="Folder" x:Name="folderTab" odc:KeyTip.Key="TF">
+                            <odc:RibbonGroup Title="{Binding Name}" DataContext="{Binding SelectedFolder, Mode=OneWay}">
+                                <odc:RibbonButton xy:RibbonSrc.Name="open_document" Content="Add Folder" Command="{x:Static local:Commands.AddFolderCommand}" />
+                                <odc:RibbonFlowGroup>
+                                    <odc:RibbonButtonGroup>
+                                        <odc:RibbonButton Content="Delete Folder" xy:RibbonSrc.Name="remove" odc:RibbonBar.MinSize="Medium"
+                                                Command="{x:Static local:Commands.DeleteFolderCommand}" />
+                                    </odc:RibbonButtonGroup>
+
+                                    <odc:RibbonButtonGroup>
+                                        <odc:RibbonButton xy:RibbonSrc.Name="up" Content="Up" Command="{x:Static local:Commands.FolderUpCommand}" />
+                                        <odc:RibbonButton xy:RibbonSrc.Name="down" Content="Down" Command="{x:Static local:Commands.FolderDownCommand}" />
+                                        <odc:RibbonButton xy:RibbonSrc.Name="top" Content="Top" Command="{x:Static local:Commands.FolderTopCommand}" />
+                                        <odc:RibbonButton xy:RibbonSrc.Name="bottom" Content="Bottom" Command="{x:Static local:Commands.FolderBottomCommand}" />
+                                    </odc:RibbonButtonGroup>
+
+                                    <odc:RibbonTextBox Margin="4,0,4,0" Text="{Binding Name}" ContentWidth="120" x:Name="folderName"
+                                            IsEnabled="{Binding  Converter={StaticResource nullToBoolConverter}}">
+                                    </odc:RibbonTextBox>
+
+                                    <odc:RibbonButtonGroup>
+                                        <odc:RibbonButton xy:RibbonSrc.Name="left" Content="Level Up" />
+                                        <odc:RibbonButton xy:RibbonSrc.Name="right" Content="Level Down" />
+                                    </odc:RibbonButtonGroup>
+
+                                </odc:RibbonFlowGroup>
+                            </odc:RibbonGroup>
+                        </odc:RibbonTabItem>
+
+                    </odc:RibbonContextualTabSet>
+
+                </odc:RibbonBar.ContextualTabSets>
+            </odc:RibbonBar>
+
+            <odc:OutlookBar x:Name="outlook" Grid.Row="1" Grid.Column="0" Width="190" ShowButtons="True" MaxWidth="320" ShowSideButtons="True"
+                    odc:KeyTip.Key="OX" SelectedSectionIndex="{Binding SectionIndex, ElementName=main}" Margin="4,2,0,4">
+                <odc:OutlookBar.OptionButtons>
+                    <ToggleButton Content="All" Width="40" />
+                    <ToggleButton Content="Favorites" Width="60" />
+                </odc:OutlookBar.OptionButtons>
+                <odc:OutlookBar.Sections>
+
+                    <odc:OutlookSection Header="Passwords" Image="/img/Lock_32.png" odc:KeyTip.Key="SP">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <odc:OdcExpander Header="Favorites" Padding="0" Image="/img/favorites_16.png" Grid.Row="0" odc:KeyTip.Key="EF">
+                                <TreeView x:Name="foldersTreeView" Margin="0" Padding="4" BorderThickness="0" GotFocus="OnFavoritesGotFocus" odc:KeyTip.Key="SF"
+                                        odc:RibbonOption.CloseDropDownOnClick="True" odc:ClickableTreeViewItem.Click="SelectCategoryTreeViewItemClicked"
+                                        ItemsSource="{Binding Source={StaticResource folderData}}" ItemTemplate="{StaticResource folderItemTemplate}"
+                                        SelectedItemChanged="OnSelectedFolderChanged" />
+                            </odc:OdcExpander>
+                            <odc:OdcExpander Header="Categories" Padding="0" Grid.Row="1" VerticalAlignment="Stretch" Image="/img/category_16.png"
+                                    odc:KeyTip.Key="EC">
+                                <TreeView x:Name="categoriesTree" Margin="0" Padding="4" SelectedItemChanged="OnSelectedCategoryChanged" odc:KeyTip.Key="SC"
+                                        ItemsSource="{Binding Source={StaticResource categoryData}}" GotFocus="OnCategoriesGotFocus"
+                                        ItemTemplate="{StaticResource categoryItemTemplate}" BorderThickness="0">
+                                </TreeView>
+                            </odc:OdcExpander>
+                        </Grid>
+                    </odc:OutlookSection>
+
+                    <odc:OutlookSection Header="Templates" Image="/img/Layout_32.png" odc:KeyTip.Key="ST">
+                        <TreeView Margin="0" Padding="4" SelectedItemChanged="OnSelectedCategoryChanged" x:Name="templateCategoryTree"
+                                ItemsSource="{Binding Source={StaticResource categoryData}}" ItemTemplate="{StaticResource categoryItemTemplateT}"
+                                BorderThickness="0">
+                            <TreeView.ItemContainerStyle>
+                                <Style TargetType="TreeViewItem">
+                                    <Setter Property="Template" Value="{DynamicResource {ComponentResourceKey odc:Skins, TreeViewItemTemplate}}" />
+                                    <Setter Property="IsExpanded" Value="True" />
+                                </Style>
+                            </TreeView.ItemContainerStyle>
+                        </TreeView>
+                    </odc:OutlookSection>
+
+                </odc:OutlookBar.Sections>
+            </odc:OutlookBar>
+
+            <uc:PasswordGrid x:Name="PasswordGrid" Grid.Column="1" Grid.Row="1" GotFocus="OnPasswordsGotFocus" Focusable="False"
+                    SelectedNode="{Binding SelectedNode,Mode=TwoWay, ElementName=main}"
+                    SelectedPassword="{Binding SelectedPassword, ElementName=main, Mode=TwoWay}" />
+
+            <uc:TemplateGrid x:Name="TemplateGrid" Visibility="Hidden" Grid.Column="1" Grid.Row="1" Focusable="False"
+                    SelectedNode="{Binding SelectedNode,Mode=TwoWay, ElementName=main}"
+                    SelectedCategory="{Binding SelectedCategory, ElementName=main,Mode=TwoWay}" />
+
+        </Grid>
+    </Grid>
+
+</odc:RibbonWindow>

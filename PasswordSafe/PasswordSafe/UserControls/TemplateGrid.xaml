@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="PasswordSafe.UserControls.TemplateGrid" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:odc="clr-namespace:Odyssey.Controls;assembly=Odyssey" xmlns:local="clr-namespace:PasswordSafe.Controls" x:Name="templateGrid"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/DataTemplates.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Grid.Column="1" Grid.Row="1" Focusable="False">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <odc:BreadcrumbBar x:Name="breadcrumb" Grid.Row="0" HorizontalAlignment="Stretch" Margin="0,2,2,0"
+                DataContext="{Binding SelectedNode, ElementName=templateGrid}" BreadcrumbItemTemplate="{StaticResource BreadcrumbCategoryTemplate}"
+                Root="{Binding BreadcrumbRoot, ElementName=templateGrid}" SelectedBreadcrumbChanged="OnCategoryBreadcrumbItemSelected"
+                PathBinding="{Binding Path, Mode=OneWay}" TraceBinding="{Binding Name}" ImageBinding="{Binding Converter={StaticResource imageConverter}}"
+                HideRootNode="True" BreadcrumbItemTemplateSelector="{StaticResource breadcrumbSelector}"
+                DropDownItemsSource="{Binding BreadcrumbHierarchy, ElementName=templateGrid}">
+        </odc:BreadcrumbBar>
+
+        <Grid Focusable="False" Grid.Row="1">
+            <Border Margin="0,4,2,4" Focusable="False" Background="#60FFFFFF" BorderBrush="{DynamicResource {ComponentResourceKey odc:Skins, BorderBrush}}"
+                    BorderThickness="1">
+                <Grid Visibility="{Binding Converter={StaticResource nullToVisibleConverter}}" Focusable="False">
+                    <ScrollViewer CanContentScroll="True" HorizontalScrollBarVisibility="Disabled"  Focusable="False"
+                            VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Stretch" odc:RibbonOption.AnimateTransition="True">
+                        <ItemsControl x:Name="FieldListControl" Margin=" 0" Background=" Transparent" Focusable="False" ItemsSource="{Binding Fields}"
+                                DataContext="{Binding SelectedCategory, ElementName=templateGrid}" HorizontalContentAlignment=" Stretch"
+                                ItemTemplateSelector="{StaticResource templateFieldSelector}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                            <ItemsControl.ItemContainerStyle>
+                                <Style TargetType="FrameworkElement">
+                                    <Setter Property="Focusable" Value="False" />
+                                </Style>
+                            </ItemsControl.ItemContainerStyle>
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Margin="0,10,0,10" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

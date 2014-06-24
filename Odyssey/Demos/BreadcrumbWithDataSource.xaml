@@ -1,0 +1,55 @@
+﻿<Window x:Class="Demos.BreadcrumbDS"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:odc="http://schemas.odyssey.com/wpf"
+       Background="LightSteelBlue"
+    Title="BeadcrumbBar Demo: Using XmlDataProvider as Root Property" Height="300" Width="700">
+    <Window.Resources>
+        <XmlDataProvider x:Key="dataProvider" XPath="bc">
+            <x:XData>
+                <bc xmlns="" title="Desktop">
+                    <bc title="Computer">
+                        <bc title="C:" >
+                            <bc title="Windows" >
+                                <bc title="System32"/>
+                                <bc title="ie7"/>
+                                <bc title="Microsoft.NET"/>
+                                <bc title="Fonts"/>
+                                <bc title="Driver Cache"/>
+                                <bc title="inf"/>
+                            </bc>
+                            <bc title="Program Files">
+                                <bc title="Visual Studio"/>
+                                <bc title="Office"/>
+                            </bc>
+                            <bc title="Users">
+                                <bc title="Administrator"/>
+                                <bc title="Guest"/>
+                            </bc>
+                        </bc>
+                        <bc title="D:"/>
+                    </bc>
+                    <bc title="Network">
+                        <bc title="odyssey">
+                            <bc title="public"/>
+                            <bc title="private"/>
+                        </bc>
+                        <bc title="daedalus">
+                            <bc title="system"/>
+                            <bc title="confidential"/>
+                        </bc>
+                    </bc>
+                </bc>
+            </x:XData>
+        </XmlDataProvider>
+        <HierarchicalDataTemplate DataType="bc" ItemsSource="{Binding XPath=*}">
+            <TextBlock Text="{Binding XPath=@title}" Foreground="Red"/>
+        </HierarchicalDataTemplate>
+    </Window.Resources>
+    <DockPanel Margin="5">
+        <odc:BreadcrumbBar x:Name="bar2" DockPanel.Dock="Top"  
+                           TraceBinding="{Binding XPath=@title}"
+                           Root="{StaticResource dataProvider}"/>
+        <Grid></Grid>
+    </DockPanel>
+</Window>

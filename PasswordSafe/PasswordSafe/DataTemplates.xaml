@@ -1,0 +1,220 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:local="clr-namespace:PasswordSafe.Controls" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mwt="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
+        xmlns:sel="clr-namespace:PasswordSafe.DataTemplateSelectors"
+        xmlns:biz="clr-namespace:PasswordSafe.Data.Biz;assembly=PasswordSafe.Data"
+        xmlns:classes="clr-namespace:PasswordSafe.Classes" xmlns:conv="clr-namespace:PasswordSafe.Converter"
+        xmlns:ctrl="clr-namespace:PasswordSafe.Controls" xmlns:odc="clr-namespace:Odyssey.Controls;assembly=Odyssey">
+
+    <local:NullToVisibleConverter x:Key="nullToVisibleConverter" />
+    <local:VisibilityConverter x:Key="visibilityConverter" />
+    <conv:ImageConverter x:Key="imageConverter" />
+    <conv:FieldTypeConverter x:Key="fieldTypeConverter" />
+    <conv:NullToBoolConverter x:Key="nullToBoolConverter" />
+    <conv:CountConverter x:Key="countConverter" />
+    <conv:DateConverter x:Key="dateConverter" />
+    <conv:TimeConverter x:Key="timeConverter" />
+    <conv:IntConverter x:Key="intConverter" />
+    <conv:FavoriteImageConverter x:Key="favoriteImageConverter" />
+    <conv:CopyFieldConverter x:Key="copyFieldConverter" />
+
+    <sel:BreadcrumbItemSelector x:Key="breadcrumbSelector" />
+
+    <sel:CopyPasswordSelector x:Key="copyPasswordSelector" />
+    <sel:FieldSelector x:Key="PasswordItemSelector" />
+    <sel:TemplateFieldSelector x:Key="templateFieldSelector" />
+
+    <classes:UIContext x:Key="dataContext" />
+
+    <ObjectDataProvider x:Key="categoryData" ObjectInstance="{StaticResource dataContext}" MethodName="GetCategories"
+            IsAsynchronous="False"  IsInitialLoadEnabled="False" />
+    <ObjectDataProvider x:Key="folderData" ObjectInstance="{StaticResource dataContext}" MethodName="GetFolders"
+            IsAsynchronous="True" IsInitialLoadEnabled="False" />
+    <ObjectDataProvider x:Key="fieldTypesData" ObjectInstance="{StaticResource dataContext}" MethodName="Types"
+            IsAsynchronous="False" IsInitialLoadEnabled="False" />
+
+    <HierarchicalDataTemplate DataType="{x:Type biz:NodeBase}" x:Key="BreadcrumbCategoryTemplate"
+            ItemsSource="{Binding Children}">
+        <TextBlock Text="{Binding Name}" SnapsToDevicePixels="True" VerticalAlignment="Center" />
+    </HierarchicalDataTemplate>
+
+    <DataTemplate x:Key="CopyFieldTemplate" DataType="{x:Type biz:Field}">
+        <TextBlock Text="{Binding Name}" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="DropDownPasswordSeparatorFieldTemplate" DataType="{x:Type biz:Field}">
+        <Separator HorizontalAlignment="Stretch" Height="3" />
+    </DataTemplate>
+
+
+    <DataTemplate DataType="{x:Type biz:Field}">
+        <TextBlock Text="{Binding Name}" />
+    </DataTemplate>
+
+    <HierarchicalDataTemplate x:Key="categoryItemTemplate" DataType="{x:Type biz:Category}"
+            ItemsSource="{Binding Categories}">
+        <DockPanel HorizontalAlignment="Stretch">
+            <Image DockPanel.Dock="Left" Source="{Binding Converter={StaticResource imageConverter}}" Width="16"
+                    Height="16" Stretch="Fill" VerticalAlignment="Center" />
+
+            <ctrl:EditLabel Text="{Binding Name,Mode=TwoWay}" Margin="4,0,4,0">
+                <ctrl:EditLabel.ContextMenu>
+                    <ContextMenu>
+                        <odc:RibbonMenuItem Header="Add Category" Command="{x:Static local:Commands.AddCategoryCommand}"
+                                Image="img/add_16.png" />
+                        <odc:RibbonMenuItem Header="Delete Category"
+                                Command="{x:Static local:Commands.DeleteCategoryCommand}" Image="img/delete_16.png" />
+                        <odc:RibbonMenuItem Header="Rename" Image="img/defineName_16.png"
+                                Command="{x:Static local:EditLabel.EditCommand}" />
+                        <Separator />
+                        <odc:RibbonMenuItem Header="Up" Command="{x:Static local:Commands.CategoryUpCommand}"
+                                Image="img/up_16.png" />
+                        <odc:RibbonMenuItem Header="Down" Command="{x:Static local:Commands.CategoryDownCommand}"
+                                Image="img/down_16.png" />
+                    </ContextMenu>
+                </ctrl:EditLabel.ContextMenu>
+            </ctrl:EditLabel>
+            <TextBlock Text="{Binding NestedPasswordCount, Converter={StaticResource countConverter}}" Margin="0,0,4,0"
+                    Foreground="Gray" />
+        </DockPanel>
+    </HierarchicalDataTemplate>
+
+    <HierarchicalDataTemplate x:Key="categoryItemTemplateT" DataType="{x:Type biz:Category}" ItemsSource="{Binding Categories}">
+        <DockPanel HorizontalAlignment="Stretch">
+            <Image DockPanel.Dock="Left" Source="{Binding Converter={StaticResource imageConverter}}" Width="16" Height="16" Stretch="Fill"
+                    VerticalAlignment="Center" />
+
+            <ctrl:EditLabel Text="{Binding Name,Mode=TwoWay}" Margin="4,0,4,0" HorizontalAlignment="Left">
+                <ctrl:EditLabel.ContextMenu >
+                    <ContextMenu>
+                        <odc:RibbonMenuItem Header="Add Category" Command="{x:Static local:Commands.AddCategoryCommand}" Image="img/add_16.png" />
+                        <odc:RibbonMenuItem Header="Delete Category" Command="{x:Static local:Commands.DeleteCategoryCommand}" Image="img/delete_16.png" />
+                        <odc:RibbonMenuItem Header="Rename" Image="img/defineName_16.png" Command="{x:Static local:EditLabel.EditCommand}" />
+                        <Separator />
+                        <odc:RibbonMenuItem Header="Up" Command="{x:Static local:Commands.CategoryUpCommand}" Image="img/up_16.png" />
+                        <odc:RibbonMenuItem Header="Down" Command="{x:Static local:Commands.CategoryDownCommand}" Image="img/down_16.png" />
+                    </ContextMenu>
+                </ctrl:EditLabel.ContextMenu>
+            </ctrl:EditLabel>
+        </DockPanel>
+    </HierarchicalDataTemplate>
+
+    <HierarchicalDataTemplate x:Key="folderItemTemplate" DataType="{x:Type biz:Folder}" ItemsSource="{Binding Folders}">
+        <DockPanel HorizontalAlignment="Stretch">
+            <Image DockPanel.Dock="Left" Source="{Binding Converter={StaticResource imageConverter}}" Width="16"
+                    Height="16" Stretch="Fill" VerticalAlignment="Center" />
+            <ctrl:EditLabel Text="{Binding Name,Mode=TwoWay}" Margin="4,0,4,0">
+                <ctrl:EditLabel.ContextMenu>
+                    <ContextMenu>
+                        <odc:RibbonMenuItem Header="Add Folder" Command="{x:Static local:Commands.AddFolderCommand}"
+                                Image="img/add_16.png" />
+                        <odc:RibbonMenuItem Header="Delete Folder"
+                                Command="{x:Static local:Commands.DeleteFolderCommand}" Image="img/delete_16.png" />
+                        <odc:RibbonMenuItem Header="Rename" Image="img/defineName_16.png"
+                                Command="{x:Static local:EditLabel.EditCommand}" />
+                        <Separator />
+                        <odc:RibbonMenuItem Header="Up" Command="{x:Static local:Commands.FolderUpCommand}"
+                                Image="img/up_16.png" />
+                        <odc:RibbonMenuItem Header="Down" Command="{x:Static local:Commands.FolderDownCommand}"
+                                Image="img/down_16.png" />
+                    </ContextMenu>
+                </ctrl:EditLabel.ContextMenu>
+            </ctrl:EditLabel>
+            <TextBlock Text="{Binding NestedPasswordCount, Converter={StaticResource countConverter}}" Margin="0,0,4,0"
+                    Foreground="Gray" />
+        </DockPanel>
+    </HierarchicalDataTemplate>
+
+    <HierarchicalDataTemplate x:Key="bcBreadcrumbItemTemplate" DataType="{x:Type biz:CustomNode}"
+            ItemsSource="{Binding Children}">
+        <Border />
+    </HierarchicalDataTemplate>
+
+    <HierarchicalDataTemplate x:Key="bcCategoryItemTemplate" DataType="{x:Type biz:Category}"
+            ItemsSource="{Binding Categories}">
+        <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="4,0,4,0" />
+    </HierarchicalDataTemplate>
+
+    <HierarchicalDataTemplate x:Key="bcFolderItemTemplate" DataType="{x:Type biz:Folder}"
+            ItemsSource="{Binding Folders}">
+        <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="4,0,4,0" />
+    </HierarchicalDataTemplate>
+
+    <HierarchicalDataTemplate DataType="{x:Type biz:CustomNode}" ItemsSource="{Binding Children}">
+        <DockPanel HorizontalAlignment="Stretch">
+            <Image DockPanel.Dock="Left" Source="{Binding Converter={StaticResource imageConverter}}" Width="16"
+                    Height="16" Stretch="Fill" VerticalAlignment="Center" />
+            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="4,0,4,0" />
+            <TextBlock Text="{Binding Passwords.Count, Converter={StaticResource countConverter}}" Margin="0,0,4,0"
+                    Foreground="Gray" />
+        </DockPanel>
+    </HierarchicalDataTemplate>
+
+    <HierarchicalDataTemplate x:Key="categoryItemTemplate3" DataType="{x:Type biz:Category}"
+            ItemsSource="{Binding Categories}">
+        <DockPanel HorizontalAlignment="Stretch">
+            <Image DockPanel.Dock="Left" Source="{Binding Converter={StaticResource imageConverter}}" Width="16"
+                    Height="16" Stretch="Fill" VerticalAlignment="Center" />
+            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" x:Name="label" Margin="4,0,4,0" />
+        </DockPanel>
+    </HierarchicalDataTemplate>
+
+    <DataTemplate x:Key="CategoryFieldTemplate" DataType="{x:Type biz:TemplateField}">
+        <Border>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="94" />
+                </Grid.ColumnDefinitions>
+                <RadioButton x:Name="radio" Grid.Column="0" VerticalAlignment="Center" Margin="4"
+                        IsChecked="{Binding IsSelected}" />
+                <Separator Grid.Column="1" x:Name="separator" Margin="4,2,0,4" HorizontalContentAlignment="Stretch"
+                        Visibility="Collapsed" />
+                <odc:OdcTextBox x:Name="edit" Grid.Column="1" Text="{Binding Name}" Margin="4,2,0,2"
+                        Visibility="Visible" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                <ComboBox Grid.Column="2" Margin="4,2,0,4"
+                        ItemsSource="{Binding Source={StaticResource fieldTypesData}}"
+                        SelectedIndex="{Binding Type, Converter={StaticResource fieldTypeConverter}}" />
+            </Grid>
+        </Border>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding Type, Converter={StaticResource fieldTypeConverter}}" Value="7">
+                <Setter TargetName="separator" Property="Visibility" Value="Visible" />
+                <Setter TargetName="edit" Property="Visibility" Value="Collapsed" />
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+    <!--####### PasswordGrid ####################-->
+
+    <HierarchicalDataTemplate x:Key="FavoriteFolderTemplate" DataType="{x:Type biz:PasswordFolder}"
+            ItemsSource="{Binding Folders}">
+        <Grid Focusable="False">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="28" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Image x:Name="img2" Grid.Column="0" Source="{Binding Converter={StaticResource imageConverter}}" Width="16"
+                    Height="16" Stretch="Fill" VerticalAlignment="Center" />
+            <TextBlock Grid.Column="1" Text="{Binding Name}" SnapsToDevicePixels="True" VerticalAlignment="Center"
+                    Margin="-4,0,4,0" />
+            <ToggleButton Grid.Column="2" Focusable="False" IsChecked="{Binding IsFavorite}">
+                <ToggleButton.Template>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Image x:Name="img" Source="/img/faves16.png" Width="16" Height="16" VerticalAlignment="Center"
+                                HorizontalAlignment="Center" Stretch="Fill"
+                                RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="False">
+                                <Setter Property="Source" TargetName="img" Value="/img/nofaves16.png" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </ToggleButton.Template>
+            </ToggleButton>
+        </Grid>
+    </HierarchicalDataTemplate>
+
+</ResourceDictionary>
