@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:odc="clr-namespace:Odyssey.Controls" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Odyssey;Component/Themes/OutlookBar/ToggleButton.xaml" />
@@ -22,7 +22,7 @@
                             <DockPanel Focusable="False">
                                 <Image RenderOptions.BitmapScalingMode="NearestNeighbor"
                                         RenderOptions.EdgeMode="Aliased" Source="{TemplateBinding Image}"
-                                        Focusable="False" DockPanel.Dock="Left" Margin="4,0,4,0"
+                                        Focusable="False" DockPanel.Dock="Left" Margin="4,0,4,0" Stretch="None"
                                         SnapsToDevicePixels="False" ClipToBounds="True" VerticalAlignment="Center"
                                         Width="24" Height="24" />
                                 <ContentPresenter x:Name="content" Focusable="False" Content="{TemplateBinding Header}"
