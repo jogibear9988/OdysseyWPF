@@ -6,15 +6,13 @@
             <DrawingGroup>
                 <GeometryDrawing Geometry="M3,5 L 3,1 L1,3 Z">
                     <GeometryDrawing.Pen>
-                        <Pen Brush="{DynamicResource {ComponentResourceKey odc:Skins, LightBorderBrush}}" Thickness="1" />
+                        <Pen Brush="#E0FFFFFF" Thickness="1" />
                     </GeometryDrawing.Pen>
                 </GeometryDrawing>
 
-                <GeometryDrawing Geometry="M2,4 L 2,0 L0,2 Z"
-                        Brush="{DynamicResource {ComponentResourceKey odc:Skins, RibbonForegroundBrush}}">
+                <GeometryDrawing Geometry="M2,4 L 2,0 L0,2 Z" Brush="#FF15428B">
                     <GeometryDrawing.Pen>
-                        <Pen Brush="{DynamicResource {ComponentResourceKey odc:Skins, RibbonForegroundBrush}}"
-                                Thickness="1" />
+                        <Pen Brush="#FF15428B" Thickness="1" />
                     </GeometryDrawing.Pen>
                 </GeometryDrawing>
             </DrawingGroup>
@@ -27,15 +25,13 @@
             <DrawingGroup>
                 <GeometryDrawing Geometry="M1,5 L 1,1 L3,3 Z">
                     <GeometryDrawing.Pen>
-                        <Pen Brush="{DynamicResource {ComponentResourceKey odc:Skins, LightBorderBrush}}" Thickness="1" />
+                        <Pen Brush="#E0FFFFFF" Thickness="1" />
                     </GeometryDrawing.Pen>
                 </GeometryDrawing>
 
-                <GeometryDrawing Geometry="M0,4 L 0,0 L2,2 Z"
-                        Brush="{DynamicResource {ComponentResourceKey odc:Skins, RibbonForegroundBrush}}">
+                <GeometryDrawing Geometry="M0,4 L 0,0 L2,2 Z" Brush="#FF15428B">
                     <GeometryDrawing.Pen>
-                        <Pen Brush="{DynamicResource {ComponentResourceKey odc:Skins, RibbonForegroundBrush}}"
-                                Thickness="1" />
+                        <Pen Brush="#FF15428B" Thickness="1" />
                     </GeometryDrawing.Pen>
                 </GeometryDrawing>
             </DrawingGroup>
@@ -47,15 +43,13 @@
             <DrawingGroup>
                 <GeometryDrawing Geometry="M5,1 L 3,3 L1,1 Z">
                     <GeometryDrawing.Pen>
-                        <Pen Brush="{DynamicResource {ComponentResourceKey odc:Skins, LightBorderBrush}}" Thickness="1" />
+                        <Pen Brush="#E0FFFFFF" Thickness="1" />
                     </GeometryDrawing.Pen>
                 </GeometryDrawing>
 
-                <GeometryDrawing Geometry="M4,0 L 2,2 L0,0 Z"
-                        Brush="{DynamicResource {ComponentResourceKey odc:Skins, RibbonForegroundBrush}}">
+                <GeometryDrawing Geometry="M4,0 L 2,2 L0,0 Z" Brush="#FF15428B">
                     <GeometryDrawing.Pen>
-                        <Pen Brush="{DynamicResource {ComponentResourceKey odc:Skins, RibbonForegroundBrush}}"
-                                Thickness="1" />
+                        <Pen Brush="#FF15428B" Thickness="1" />
                     </GeometryDrawing.Pen>
                 </GeometryDrawing>
             </DrawingGroup>
@@ -67,15 +61,13 @@
             <DrawingGroup>
                 <GeometryDrawing Geometry="M5,3 L 3,1 L1,3 Z">
                     <GeometryDrawing.Pen>
-                        <Pen Brush="{DynamicResource {ComponentResourceKey odc:Skins, LightBorderBrush}}" Thickness="1" />
+                        <Pen Brush="#E0FFFFFF" Thickness="1" />
                     </GeometryDrawing.Pen>
                 </GeometryDrawing>
 
-                <GeometryDrawing Geometry="M4,2 L 2,0 L0,2 Z"
-                        Brush="{DynamicResource {ComponentResourceKey odc:Skins, RibbonForegroundBrush}}">
+                <GeometryDrawing Geometry="M4,2 L 2,0 L0,2 Z" Brush="#FF15428B">
                     <GeometryDrawing.Pen>
-                        <Pen Brush="{DynamicResource {ComponentResourceKey odc:Skins, RibbonForegroundBrush}}"
-                                Thickness="1" />
+                        <Pen Brush="#FF15428B" Thickness="1" />
                     </GeometryDrawing.Pen>
                 </GeometryDrawing>
             </DrawingGroup>
@@ -88,15 +80,13 @@
 
                 <GeometryDrawing Geometry="M1,0 L 4,3 L 1,6 M 4,0 L 7,3 L 4,6">
                     <GeometryDrawing.Pen>
-                        <Pen Brush="{DynamicResource {ComponentResourceKey odc:Skins, LightBorderBrush}}"
-                                StartLineCap="Square" EndLineCap="Square" Thickness="1" />
+                        <Pen Brush="#E0FFFFFF" StartLineCap="Square" EndLineCap="Square" Thickness="1" />
                     </GeometryDrawing.Pen>
                 </GeometryDrawing>
 
                 <GeometryDrawing Geometry="M0,0 L 3,3 L 0,6 M 3,0 L 6,3 L 3,6">
                     <GeometryDrawing.Pen>
-                        <Pen Brush="{DynamicResource {ComponentResourceKey odc:Skins, RibbonForegroundBrush}}"
-                                StartLineCap="Square" EndLineCap="Square" Thickness="1" />
+                        <Pen Brush="#FF15428B" StartLineCap="Square" EndLineCap="Square" Thickness="1" />
                     </GeometryDrawing.Pen>
                 </GeometryDrawing>
 
@@ -109,23 +99,20 @@
             <DrawingGroup>
                 <GeometryDrawing Geometry="M0,2 L6,2">
                     <GeometryDrawing.Pen>
-                        <Pen Brush="{DynamicResource {ComponentResourceKey odc:Skins, LightBorderBrush}}" Thickness="1" />
+                        <Pen Brush="#FF15428B" Thickness="1" />
                     </GeometryDrawing.Pen>
                 </GeometryDrawing>
-                <GeometryDrawing Geometry="M0,5 L 6,5 L 3,9 L 0,5"
-                        Brush="{DynamicResource {ComponentResourceKey odc:Skins, LightBorderBrush}}">
+                <GeometryDrawing Brush="#FF15428B" Geometry="M0,5 L 6,5 L 3,9 L 0,5">
                     <GeometryDrawing.Pen>
                         <Pen Thickness="0" />
                     </GeometryDrawing.Pen>
                 </GeometryDrawing>
                 <GeometryDrawing Geometry="M0,1 L6,1">
                     <GeometryDrawing.Pen>
-                        <Pen Brush="{DynamicResource {ComponentResourceKey odc:Skins, QAMenuArrowImgBdrBrush}}"
-                                Thickness="1" />
+                        <Pen Brush="Black" Thickness="1" />
                     </GeometryDrawing.Pen>
                 </GeometryDrawing>
-                <GeometryDrawing Geometry="M0,4 L 6,4 L 3,8 L 0,4"
-                        Brush="{DynamicResource {ComponentResourceKey odc:Skins, QAMenuArrowImgBdrBrush}}">
+                <GeometryDrawing Geometry="M0,4 L 6,4 L 3,8 L 0,4" Brush="Black">
                     <GeometryDrawing.Pen>
                         <Pen Thickness="0" />
                     </GeometryDrawing.Pen>
@@ -139,12 +126,10 @@
             <DrawingGroup>
                 <GeometryDrawing Geometry="M0,1 L6,1">
                     <GeometryDrawing.Pen>
-                        <Pen Brush="{DynamicResource {ComponentResourceKey odc:Skins, RibbonForegroundBrush}}"
-                                Thickness="1" />
+                        <Pen Thickness="1" Brush="#FF15428B" />
                     </GeometryDrawing.Pen>
                 </GeometryDrawing>
-                <GeometryDrawing Geometry="M0,4 L 6,4 L 3,8 L 0,4"
-                        Brush="{DynamicResource {ComponentResourceKey odc:Skins, RibbonForegroundBrush}}">
+                <GeometryDrawing Geometry="M0,4 L 6,4 L 3,8 L 0,4" Brush="#FF15428B">
                     <GeometryDrawing.Pen>
                         <Pen Thickness="0" />
                     </GeometryDrawing.Pen>
@@ -159,14 +144,12 @@
             <DrawingGroup>
                 <GeometryDrawing Geometry="M0,3L6,3 6,8 0,8 0,4z  M3,2 L3,0L9,0L9,5L7,5">
                     <GeometryDrawing.Pen>
-                        <Pen Brush="{DynamicResource {ComponentResourceKey odc:Skins, WindowButtonPenColor}}"
-                                Thickness="1" StartLineCap="Flat" EndLineCap="Flat" />
+                        <Pen Brush="#FF58687A" Thickness="1" StartLineCap="Flat" EndLineCap="Flat" />
                     </GeometryDrawing.Pen>
                 </GeometryDrawing>
                 <GeometryDrawing Geometry="M0,4L6,4 M3,1L9,1">
                     <GeometryDrawing.Pen>
-                        <Pen Brush="{DynamicResource {ComponentResourceKey odc:Skins, WindowButtonPenColor}}"
-                                Thickness="1" StartLineCap="Flat" EndLineCap="Flat" />
+                        <Pen Brush="#FF58687A" Thickness="1" StartLineCap="Flat" EndLineCap="Flat" />
                     </GeometryDrawing.Pen>
                 </GeometryDrawing>
             </DrawingGroup>
@@ -174,17 +157,17 @@
     </DrawingImage>
 
     <DrawingImage x:Key="{ComponentResourceKey odc:Skins, LauncherButtonImage}"
-            RenderOptions.BitmapScalingMode="HighQuality">
+			RenderOptions.BitmapScalingMode="HighQuality">
         <DrawingImage.Drawing>
             <DrawingGroup>
                 <GeometryDrawing Geometry="M1,6 L1,1 L6,1">
                     <GeometryDrawing.Pen>
-                        <Pen Brush="{DynamicResource {ComponentResourceKey odc:Skins, LightBorderBrush}}" Thickness="1" />
+                        <Pen Brush="#FF15428B" Thickness="1" />
                     </GeometryDrawing.Pen>
                 </GeometryDrawing>
                 <GeometryDrawing Geometry="M 7,4 L 7,7 L 4,7">
                     <GeometryDrawing.Pen>
-                        <Pen Brush="{DynamicResource {ComponentResourceKey odc:Skins, LightBorderBrush}}" Thickness="1" />
+                        <Pen Brush="#FF15428B" Thickness="1" />
                     </GeometryDrawing.Pen>
                 </GeometryDrawing>
 
@@ -193,8 +176,7 @@
                         <Pen Brush="#50000000" Thickness="1" />
                     </GeometryDrawing.Pen>
                 </GeometryDrawing>
-                <GeometryDrawing Geometry="M 6,3 L 6,6 L 3,6 Z"
-                        Brush="{DynamicResource {ComponentResourceKey odc:Skins, RibbonForegroundBrush}}">
+                <GeometryDrawing Geometry="M 6,3 L 6,6 L 3,6 Z" Brush="#FF15428B">
                     <GeometryDrawing.Pen>
                         <Pen Brush="#50000000" Thickness="1" />
                     </GeometryDrawing.Pen>
